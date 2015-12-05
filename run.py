@@ -4,8 +4,7 @@ import app.apis.kintone as kintone
 
 
 if __name__ == "__main__":
-    tweets = twitter.get_tweets()
-    priorities = [t.attach_priority(watson.judge_priority(t.message)) for t in tweets]
-
-    for t in tweets:
-        kintone.post(t)
+    for n in twitter.get_tweets():
+        priority = watson.judge_priority(n.message)
+        n.priority = priority
+        kintone.post(n)
