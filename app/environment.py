@@ -5,7 +5,7 @@ class Environment(object):
 
     def __init__(self, config_file=""):
         Kintone = namedtuple("Kintone", ["domain", "login_id", "password"])
-        Watson = namedtuple("Watson", ["watson_id", "password"])
+        Watson = namedtuple("Watson", ["watson_id", "password", "classifier"])
         Twitter = namedtuple("Twitter", ["token", "token_secret"])
 
         self.kintone = None
@@ -24,7 +24,7 @@ class Environment(object):
                 import yaml
                 e = yaml.load(cf)
                 self.kintone = Kintone(e["kintone"]["domain"], e["kintone"]["id"], e["kintone"]["password"])
-                self.watson = Watson(e["watson"]["id"], e["watson"]["password"])
+                self.watson = Watson(e["watson"]["id"], e["watson"]["password"], e["watson"]["classifier"])
                 self.twitter = Twitter(e["twitter"]["token"], e["twitter"]["token_secret"])
 
         except Exception as ex:
