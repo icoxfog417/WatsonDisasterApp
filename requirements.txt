@@ -1,7 +1,9 @@
-pykintone==0.3.4
+pykintone==0.3.6
 pytz==2015.7
 PyYAML==3.11
 requests==2.8.1
 tzlocal==1.2
 wheel==0.24.0
 watson-developer-cloud==0.1.9
+oauthlib==1.0.3
+requests-oauthlib==0.5.0
