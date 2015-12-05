@@ -2,7 +2,8 @@ import unittest
 import app.apis.twitter as twitter
 
 
-class TestEnvironment(unittest.TestCase):
+class TestTweet(unittest.TestCase):
 
-    def test_load_environment(self):
-        twitter.get_tweets()
+    def test_get_tweets(self):
+        for t in twitter.get_tweets():
+            print(t)

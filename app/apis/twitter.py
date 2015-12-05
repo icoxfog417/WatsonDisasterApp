@@ -12,7 +12,12 @@ def get_tweets() -> Notification:
     for tweet in twitter.streaming():
         if "text" not in tweet:
             continue
-        n = Notification(message=tweet["text"], datasource="twitter")
+        n = Notification(
+            message=tweet["text"],
+            reporter=tweet["user"]["screen_name"],
+            source=tweet["id"],
+            lang=tweet["lang"]
+        )
         yield n
 
 
@@ -32,6 +37,7 @@ class TwitterStream():
 
     def streaming(self):
         data = {
+            "filter_level": "medium",
             "track": SEARCH_KEY_WORD
         }
         r = requests.post(self.TWITTER_ENDPOINT, auth=self.auth, data=data, stream=True)
