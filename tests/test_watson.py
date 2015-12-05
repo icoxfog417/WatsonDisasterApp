@@ -8,8 +8,12 @@ from app.model.priority import Priority
 
 class TestWatson(unittest.TestCase):
 
-    def test_load_watson(self):
+    def test_priority_watson(self):
         priority_test = watson.judge_priority("hogehoge")
+        self.assertNotEqual(priority_test, Priority.Untreated)
+
+    def test_category_watson(self):
+        priority_test = watson.judge_category("hogehoge")
         self.assertNotEqual(priority_test, Priority.Untreated)
 
 if __name__ == '__main__':
