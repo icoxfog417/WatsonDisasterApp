@@ -7,7 +7,7 @@ def judge_priority(text: str) -> Priority:
     env = Environment()
     natural_language_classifier = NaturalLanguageClassifier(username=env.watson.watson_id,
                                                             password=env.watson.password)
-    classes = natural_language_classifier.classify(env.watson.classifier, text)
+    classes = natural_language_classifier.classify(env.watson.classifier["classifier_category"], text)
 
     # Judge the Pritory
     if classes["classes"][0]["class_name"] == "High":

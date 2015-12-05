@@ -22,6 +22,8 @@ kintone:
 watson:
     id: your_watson_id
     password: your_watson_password
+	classifier:
+        classifier_category: your_category_classifier_id 
 twitter:
     consumer_key: your_consumer_key
     consumer_secret: your_consumer_secret
