@@ -30,10 +30,6 @@ def judge_category(text: str) -> Category:
         return Category.HelpObject
     elif classes["classes"][0]["class_name"] == "救助":
         return Category.AssistantRequest
-    elif classes["classes"][0]["class_name"] == "支援要請":
-        return Category.HelpRequest
-    elif classes["classes"][0]["class_name"] == "緊急支援":
-        return Category.Emergency
     elif classes["classes"][0]["class_name"] == "ライフライン":
         return Category.LifeLine
     elif classes["classes"][0]["class_name"] == "交通機関":
