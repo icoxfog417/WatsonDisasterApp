@@ -10,15 +10,17 @@ natural_language_classifier = NaturalLanguageClassifier(username=env.watson.wats
 def judge_priority(text: str) -> Priority:
     classes = natural_language_classifier.classify(env.watson.classifier["classifier_priority"], text)
 
-    # Judge the Pritory
-    if classes["classes"][0]["class_name"] == "High":
-        return Priority.High
-    elif classes["classes"][0]["class_name"] == "Middle":
-        return Priority.Middle
-    elif classes["classes"][0]["class_name"] == "Low":
-        return Priority.Low
+    # Judge the Category
+    judge_priority_dict = {
+        "High"   : Priority.High,
+        "Middle" : Priority.Middle,
+        "Low"    : Priority.Low
+    }
 
-    return Priority.Untreated
+    if classes["classes"][0]["class_name"] in judge_priority_dict:
+        return judge_priority_dict[classes["classes"][0]["class_name"]]
+    else:
+        return Priority.Untreated
 
 def judge_category(text: str) -> Category:
     classes = natural_language_classifier.classify(env.watson.classifier["classifier_category"], text)
@@ -34,7 +36,7 @@ def judge_category(text: str) -> Category:
         "生活支援・相談" : Category.LifeCareInformation
     }
 
-    if classes["classes"][0]["class_name"] in judge_category_dict:
+    if classes["classes"][0]["class_name"] in judge_category_dict and classes["classes"][0]["confidence"] > 0.9:
         return judge_category_dict[classes["classes"][0]["class_name"]]
     else:
         return Category.NoSetting

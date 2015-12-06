@@ -52,13 +52,14 @@ class TestWatson(unittest.TestCase):
                                 "聞）https://t.co/qvQyjiO2Ey https:/…",
                     "NoSetting" : "hogehoge"
         }
+        #Confidence
         category_choose = {"安否確認" : Category.LifeConFirmation,
                           "物資要請" : Category.HelpObject,
                           "救助" : Category.AssistantRequest,
                           "ライフライン" : Category.LifeLine,
                           "交通機関" : Category.TransPortation,
                           "住宅情報" : Category.HouseInformation,
-                          "医療・福祉・健康相談" : Category.HealthInformation,
+                          "医療・福祉・健康相談" : Category.NoSetting,
                           "生活支援・相談" : Category.LifeCareInformation,
                           "NoSetting" : Category.NoSetting
         }
@@ -83,7 +84,7 @@ class TestWatson(unittest.TestCase):
                            "Low"   : Priority.Low
                            }
         category_choose = {"High"  : Category.HelpObject,
-                           "Middle": Category.HelpObject,
+                           "Middle": Category.NoSetting,
                            "Low"   : Category.NoSetting
                            }
         for key, value in test_data_list.items():
