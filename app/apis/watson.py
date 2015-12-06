@@ -22,23 +22,19 @@ def judge_priority(text: str) -> Priority:
 
 def judge_category(text: str) -> Category:
     classes = natural_language_classifier.classify(env.watson.classifier["classifier_category"], text)
-
     # Judge the Category
-    if classes["classes"][0]["class_name"]   == "安否確認":
-        return Category.LifeConFirmation
-    elif classes["classes"][0]["class_name"] == "物資要請":
-        return Category.HelpObject
-    elif classes["classes"][0]["class_name"] == "救助":
-        return Category.AssistantRequest
-    elif classes["classes"][0]["class_name"] == "ライフライン":
-        return Category.LifeLine
-    elif classes["classes"][0]["class_name"] == "交通機関":
-        return Category.TransPortation
-    elif classes["classes"][0]["class_name"] == "住宅情報":
-        return Category.HouseInformation
-    elif classes["classes"][0]["class_name"] == "医療・福祉・健康相談":
-        return Category.HealthInformation
-    elif classes["classes"][0]["class_name"] == "生活支援・相談":
-        return Category.LifeCareInformation
+    judge_category_dict = {
+        "安否確認" : Category.LifeConFirmation,
+        "物資要請" : Category.HelpObject,
+        "救助" : Category.AssistantRequest,
+        "ライフライン" : Category.LifeLine,
+        "交通機関" : Category.TransPortation,
+        "住宅情報" : Category.HouseInformation,
+        "医療・福祉・健康相談" : Category.HealthInformation,
+        "生活支援・相談" : Category.LifeCareInformation
+    }
 
-    return Category.NoSetting
+    if classes["classes"][0]["class_name"] in judge_category_dict:
+        return judge_category_dict[classes["classes"][0]["class_name"]]
+    else:
+        return Category.NoSetting
