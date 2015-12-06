@@ -31,3 +31,11 @@ twitter:
     token: your_token
     token_secret: your_secret
 ```
+
+Also, you can add parameter for `run.py`.
+
+```
+run:
+    keyword: "災害"
+    locations: ""
+```

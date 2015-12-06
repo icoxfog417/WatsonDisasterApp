@@ -12,12 +12,9 @@ class Environment(object):
         self.watson = None
         self.twitter = None
 
-        import os
         config_file = config_file
         if not config_file:
-            default_path = os.path.join(os.path.dirname(__file__), "../environment.yaml")
-            if os.path.isfile(default_path):
-                config_file = default_path
+            config_file = self.get_default_file_path()
 
         try:
             with open(config_file) as cf:
@@ -29,6 +26,15 @@ class Environment(object):
 
         except Exception as ex:
             raise Exception("environment is not set. please confirm environment.yaml on your root or environment variables")
+
+    @classmethod
+    def get_default_file_path(cls, alternative=""):
+        import os
+        path = os.path.join(os.path.dirname(__file__), "../environment.yaml")
+        if os.path.isfile(path):
+            return path
+        else:
+            return alternative
 
     def __str__(self):
         result = ["kintone: {0} {1}:{2} ".format(self.kintone.domain, self.kintone.app_id, self.kintone.api_token)]

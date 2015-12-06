@@ -5,11 +5,11 @@ from app.environment import Environment
 from app.model.notification import Notification
 
 
-SEARCH_KEY_WORD = "twitter"
+DEFAULT_KEY_WORD = "twitter"
 
-def get_tweets() -> Notification:
+def get_tweets(keyword="", locations="") -> Notification:
     twitter = TwitterStream()
-    for tweet in twitter.streaming():
+    for tweet in twitter.streaming(keyword, locations):
         if "text" not in tweet:
             continue
         n = Notification(
@@ -35,11 +35,14 @@ class TwitterStream():
             resource_owner_key=env.twitter.token,
             resource_owner_secret=env.twitter.token_secret)
 
-    def streaming(self):
+    def streaming(self, keyword="", locations=""):
         data = {
             "filter_level": "medium",
-            "track": SEARCH_KEY_WORD
+            "track": keyword
         }
+        if locations:
+            data["locations"] = locations
+
         r = requests.post(self.TWITTER_ENDPOINT, auth=self.auth, data=data, stream=True)
 
         if r.ok:

@@ -3,9 +3,13 @@ from app.environment import Environment
 from app.model.notification import Notification
 
 
-def post(n: Notification):
+def get_kintone():
     env = Environment()
     kintone = pykintone.app(env.kintone.domain, env.kintone.app_id, env.kintone.api_token)
+    return kintone
+
+def post(n: Notification):
+    kintone = get_kintone()
     return kintone.create(n)
 
 def notify():
