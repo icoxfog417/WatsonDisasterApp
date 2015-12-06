@@ -6,6 +6,7 @@ from watson_developer_cloud import NaturalLanguageClassifierV1 as NaturalLanguag
 env = Environment()
 natural_language_classifier = NaturalLanguageClassifier(username=env.watson.watson_id,
                                                         password=env.watson.password)
+Confidence_limit = 0.9
 
 def judge_priority(text: str) -> Priority:
     classes = natural_language_classifier.classify(env.watson.classifier["classifier_priority"], text)
@@ -36,7 +37,8 @@ def judge_category(text: str) -> Category:
         "生活支援・相談" : Category.LifeCareInformation
     }
 
-    if classes["classes"][0]["class_name"] in judge_category_dict and classes["classes"][0]["confidence"] > 0.9:
+    if classes["classes"][0]["class_name"] in judge_category_dict and \
+                    classes["classes"][0]["confidence"] > Confidence_limit:
         return judge_category_dict[classes["classes"][0]["class_name"]]
     else:
         return Category.NoSetting
