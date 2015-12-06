@@ -17,7 +17,7 @@ class Environment(object):
             config_file = self.get_default_file_path()
 
         try:
-            with open(config_file) as cf:
+            with open(config_file, encoding="utf-8") as cf:
                 import yaml
                 e = yaml.load(cf)
                 self.kintone = Kintone(e["kintone"]["domain"], e["kintone"]["app_id"], e["kintone"]["api_token"])

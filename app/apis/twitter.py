@@ -38,7 +38,8 @@ class TwitterStream():
     def streaming(self, keyword="", locations=""):
         data = {
             "filter_level": "medium",
-            "track": keyword
+            "track": keyword,
+            "stall_warnings": True
         }
         if locations:
             data["locations"] = locations
@@ -48,6 +49,10 @@ class TwitterStream():
         if r.ok:
             for line in r.iter_lines():
                 if line:
-                    yield json.loads(line.decode("utf-8"))
+                    body = json.loads(line.decode("utf-8"))
+                    if "warning" in body:
+                        print(body)
+                    else:
+                        yield body
         else:
             r.raise_for_status()

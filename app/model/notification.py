@@ -24,3 +24,7 @@ class Notification(kintoneModel):
         if isinstance(value, Enum):
             value = value.value
         return value
+
+    def __str__(self):
+        text = "{0}:({1}/{2}) {3}".format(self.reporter, self.category.value, self.priority.value, self.message)
+        return text
