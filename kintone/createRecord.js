@@ -8,9 +8,9 @@
     
     //プロセス管理のアクション実行イベント(pc)
     kintone.events.on("app.record.detail.process.proceed", function(event){
-        var TARGET_APP_ID = "16";
-        var WF_LOOKUP_FIELD = "wkLookup"; //lookup field in the target app.
-        var LINKED_STATUS_FIELD = "status";
+        var targetAppId = "16";
+        var linkedField = "wkLookup"; //lookup field in the target app.
+        var linkedStatusField = "status";
         
         var status = event.status.value;
         var nextStatus = event.nextStatus.value;
@@ -19,8 +19,8 @@
         }
         
         var myId = event.record["$id"]["value"];
-        var query = WF_LOOKUP_FIELD + " = " + myId;
-        var extractTargets = kintone.api("/k/v1/records", "GET", {app: TARGET_APP_ID, fields: ["レコード番号"], query: query});
+        var query = linkedField + " = " + myId;
+        var extractTargets = kintone.api("/k/v1/records", "GET", {app: targetAppId, fields: ["レコード番号"], query: query});
         extractTargets.then(function(resp){
             if(resp["records"].length == 0){
                 return true;
@@ -30,7 +30,7 @@
             for(var i = 0; i < resp["records"].length; i++){
                 var rId = resp["records"][i]["レコード番号"]["value"];
                 var r = {};
-                r[LINKED_STATUS_FIELD] = {"value": nextStatus};
+                r[linkedStatusField] = {"value": nextStatus};
                 records.push({
                     "id": rId,
                     "record": r
@@ -38,12 +38,13 @@
             }
             
             var data = {
-                "app": TARGET_APP_ID,
+                "app": targetAppId,
                 "records": records
             };
             kintone.api("/k/v1/records", "PUT", data).then(function(result){
                 console.log("update related records.");
             })
+            
         })
     });
     
