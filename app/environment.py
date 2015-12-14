@@ -36,6 +36,21 @@ class Environment(object):
         else:
             return alternative
 
+    @classmethod
+    def get_runtime_parameters(cls):
+        path = cls.get_default_file_path()
+        keyword = ""
+        locations = ""
+        if path:
+            import yaml
+            with open(path, encoding="utf-8") as f:
+                e = yaml.load(f)
+                if "run" in e:
+                    keyword = "" if "keyword" not in e["run"] else e["run"]["keyword"]
+                    locations = "" if "locations" not in e["run"] else e["run"]["locations"]
+
+        return keyword, locations
+
     def __str__(self):
         result = ["kintone: {0} {1}:{2} ".format(self.kintone.domain, self.kintone.app_id, self.kintone.api_token)]
         result += ["watson: {0}/{1} ".format(self.watson.watson_id, self.watson.password)]

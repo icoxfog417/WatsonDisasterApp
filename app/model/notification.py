@@ -21,11 +21,25 @@ class Notification(kintoneModel):
         self.category = Category.NoSetting
         self.priority = Priority.Untreated
 
+    def valid_target(self):
+        if self.priority != Priority.Untreated and self.category != Category.NoSetting:
+            return True
+        else:
+            return False
+
     def _property_to_field(self, name, property_detail=None):
         value = super(Notification, self)._property_to_field(name, property_detail)
         if isinstance(value, Enum):
             value = value.value
         return value
+
+    def evaluate(self):
+        import app.apis.watson as watson
+        priority = watson.judge_priority(self.message)
+        category = watson.judge_category(self.message)
+        self.priority = priority
+        self.category = category
+        return self.valid_target()
 
     def __str__(self):
         text = "{0}:({1}/{2}) {3}".format(self.reporter, self.category.value, self.priority.value, self.message)
