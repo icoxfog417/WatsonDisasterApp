@@ -22,7 +22,8 @@ def get_tweets(keyword="", locations="") -> Notification:
             source=tweet["id"],
             lang=tweet["lang"],
             lat=latlng[0],
-            lng=latlng[1]
+            lng=latlng[1],
+            timestamp_ms=tweet["timestamp_ms"]
         )
         yield n
 

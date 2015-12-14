@@ -12,7 +12,7 @@ if __name__ == "__main__":
     parser.add_argument("-kw", type=str, help="keyword to search the tweets")
     parser.add_argument("-loc", type=str, help="locations to search the tweets")
     parser.add_argument("-path", type=str, help="file path to read")
-    parser.add_argument("-delimiter", type=str, default="\t", help="file delimiter")
+    parser.add_argument("-delimiter", type=str, default=",", help="file delimiter")
     parser.add_argument("--header", action="store_true", help="use header as column definition")
     parser.add_argument("--save", action="store_true", help="don't post to the kintone")
 
