@@ -9,16 +9,19 @@ class TestFileAPI(unittest.TestCase):
 
     def test_read_csv(self):
         path = self.get_path("file_csv.csv")
-        notifications = []
-        for n in read(path):
-            notifications.append(n)
-            print(n)
-        self.assertEqual(3, len(notifications))
+        self.check_read(read(path))
 
     def test_read_txt(self):
         path = self.get_path("file_txt.txt")
+        self.check_read(read(path, delimiter="\t"))
+
+    def test_read_with_header(self):
+        path = self.get_path("file_with_header.txt")
+        self.check_read(read(path, delimiter="\t", use_header=True))
+
+    def check_read(self, generator):
         notifications = []
-        for n in read(path, delimiter="\t"):
+        for n in generator:
             notifications.append(n)
             print(n)
         self.assertEqual(3, len(notifications))
