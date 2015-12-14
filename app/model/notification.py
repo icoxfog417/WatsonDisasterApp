@@ -8,12 +8,14 @@ from pykintone.structure_field import File
 
 class Notification(kintoneModel):
 
-    def __init__(self, message, reporter, source="", lang=""):
+    def __init__(self, message, reporter, source="", lang="", lat="", lng=""):
         super(Notification, self).__init__()
         self.message = message
         self.reporter = reporter
         self.source = source
         self.lang = lang
+        self.lat = lat
+        self.lng = lng
         self.date = datetime.now()
         self.images = [File()]
         self.category = Category.NoSetting

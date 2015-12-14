@@ -7,21 +7,27 @@ from app.model.notification import Notification
 
 DEFAULT_KEY_WORD = "twitter"
 
+
 def get_tweets(keyword="", locations="") -> Notification:
     twitter = TwitterStream()
     for tweet in twitter.streaming(keyword, locations):
-        if "text" not in tweet:
-            continue
+        latlng = [-1, -1]
+        if tweet["coordinates"] is not None:
+            latlng = tweet["coordinates"]["coordinates"]
+            latlng.reverse()
+
         n = Notification(
             message=tweet["text"],
             reporter=tweet["user"]["screen_name"],
             source=tweet["id"],
-            lang=tweet["lang"]
+            lang=tweet["lang"],
+            lat=latlng[0],
+            lng=latlng[1]
         )
         yield n
 
 
-class TwitterStream():
+class TwitterStream(object):
 
     # use streaming api
     # https://dev.twitter.com/streaming/reference/post/statuses/filter
@@ -37,22 +43,28 @@ class TwitterStream():
 
     def streaming(self, keyword="", locations=""):
         data = {
-            "filter_level": "medium",
-            "track": keyword,
             "stall_warnings": True
         }
         if locations:
             data["locations"] = locations
+        elif keyword:
+            data["track"] = keyword
 
         r = requests.post(self.TWITTER_ENDPOINT, auth=self.auth, data=data, stream=True)
 
         if r.ok:
             for line in r.iter_lines():
+                body = None
                 if line:
                     body = json.loads(line.decode("utf-8"))
                     if "warning" in body:
                         print(body)
-                    else:
-                        yield body
+                    if "text" not in body:
+                        body = None
+                    elif locations and keyword:
+                        if keyword not in body["text"]:
+                            body = None
+                if body:
+                    yield body
         else:
             r.raise_for_status()
