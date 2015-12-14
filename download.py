@@ -39,4 +39,7 @@ if __name__ == "__main__":
             write(args.path, notifications, create)
             create = False
             notifications = []
-        print(str(n))
+        try:
+            print(str(n))
+        except Exception as ex:
+            pass
