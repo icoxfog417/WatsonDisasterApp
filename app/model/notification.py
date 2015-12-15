@@ -4,12 +4,13 @@ from app.model.priority import Priority
 from app.model.category import Category
 from pykintone.model import kintoneModel
 from pykintone.structure_field import File
+from pykintone.structure import FieldType
 
 
 class Notification(kintoneModel):
     FORMAT = ["message", "reporter", "source", "lang", "lat", "lng", "date"]
 
-    def __init__(self, message, reporter, source="", lang="", lat="", lng="", timestamp_ms=""):
+    def __init__(self, message, reporter, source="", lang="", lat=-1, lng=-1, timestamp_ms=""):
         super(Notification, self).__init__()
         self.message = message
         self.reporter = reporter
@@ -21,6 +22,8 @@ class Notification(kintoneModel):
         self.images = [File()]
         self.category = Category.NoSetting
         self.priority = Priority.Untreated
+
+        self._pd("date", field_type=FieldType.DATETIME)
 
     def valid_target(self):
         if self.priority != Priority.Untreated and self.category != Category.NoSetting:
